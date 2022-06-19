@@ -1,16 +1,19 @@
-// ignore_for_file: override_on_non_overriding_member, annotate_overrides, avoid_unnecessary_containers, prefer_const_constructors
+// ignore_for_file: override_on_non_overriding_member, annotate_overrides, avoid_unnecessary_containers, prefer_const_constructors, file_names
 
 // import 'dart:js_util';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:penjualanrumahonline/controller.dart';
+import 'package:penjualanrumahonline/testController3.dart';
+import 'package:penjualanrumahonline/testController4.dart';
+import 'package:penjualanrumahonline/viewProfile.dart';
 
-class SignUp extends StatelessWidget {
-  SignUp({super.key});
+class EditProfile extends StatelessWidget {
+  EditProfile({super.key});
 
-  @override
   Widget tempatInput(
       TextCapitalization kapital,
       final ctrl,
@@ -34,12 +37,28 @@ class SignUp extends StatelessWidget {
     );
   }
 
-  final GetxLoginController daftarController = Get.put(GetxLoginController());
-  final GetxProfile profileController = Get.put(GetxProfile());
   final authC = Get.find<GetxLoginController>();
+  final GetxProfile2 tc = Get.put(GetxProfile2());
+  final GetxProfile3 profileEdit2 = Get.put(GetxProfile3());
 
+  @override
   Widget build(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference users = firestore.collection("users");
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Edit Profile | Rumah Online",
+            style: TextStyle(fontSize: 16.0)),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: <Color>[Color.fromARGB(255, 168, 212, 188), Colors.blue],
+            ),
+          ),
+        ),
+      ),
       backgroundColor: Color.fromARGB(255, 168, 212, 188),
       body: ListView(
         children: [
@@ -51,28 +70,8 @@ class SignUp extends StatelessWidget {
             child: Column(
               children: [
                 tempatInput(
-                  TextCapitalization.none,
-                  daftarController.emailCtrl,
-                  TextInputType.name,
-                  [FilteringTextInputFormatter.singleLineFormatter],
-                  "Email",
-                  "Isi Email",
-                  Icon(Icons.person),
-                  false,
-                ),
-                tempatInput(
-                  TextCapitalization.none,
-                  daftarController.passwordCtrl,
-                  TextInputType.name,
-                  [FilteringTextInputFormatter.singleLineFormatter],
-                  "Password",
-                  "Isi Password",
-                  Icon(Icons.lock),
-                  false,
-                ),
-                tempatInput(
                   TextCapitalization.words,
-                  profileController.namaLengkap,
+                  profileEdit2.namaLengkap,
                   TextInputType.name,
                   [FilteringTextInputFormatter.singleLineFormatter],
                   "Nama Lengkap",
@@ -82,7 +81,7 @@ class SignUp extends StatelessWidget {
                 ),
                 tempatInput(
                   TextCapitalization.none,
-                  profileController.noHP,
+                  profileEdit2.noHP,
                   TextInputType.number,
                   [FilteringTextInputFormatter.singleLineFormatter],
                   "No. HP",
@@ -92,7 +91,7 @@ class SignUp extends StatelessWidget {
                 ),
                 tempatInput(
                   TextCapitalization.words,
-                  profileController.alamatLengkap,
+                  profileEdit2.alamatLengkap,
                   TextInputType.name,
                   [FilteringTextInputFormatter.singleLineFormatter],
                   "Alamat",
@@ -114,35 +113,21 @@ class SignUp extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  authC.sign_up(profileController.namaLengkap.text, profileController.noHP.text, profileController.alamatLengkap.text, daftarController.emailCtrl.text, daftarController.passwordCtrl.text);
-                  // authC.sign_up(daftarController.emailCtrl.text,
-                  //     daftarController.passwordCtrl.text);
-                  daftarController.emailCtrl.text = '';
-                  daftarController.passwordCtrl.text = '';
+                  users.doc(profileEdit2.idUser.text).update({
+                    'nama': profileEdit2.namaLengkap.text,
+                    'alamat': profileEdit2.alamatLengkap.text,
+                    'noHp': profileEdit2.noHP.text,
+                  });
+                  Get.to(Profile());
                 },
                 child: Text(
-                  "Daftar",
+                  "Edit Profile",
                   style: TextStyle(
                     color: Color.fromARGB(255, 0, 0, 0),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 18.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Sudah Punya Akun ?"),
-              TextButton(
-                onPressed: (() => Get.back()),
-                child: Text(
-                  "LOGIN",
-                ),
-              )
-            ],
           ),
         ],
       ),

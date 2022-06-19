@@ -16,8 +16,8 @@ class DataPost extends StatelessWidget {
   DataPost({Key? key}) : super(key: key);
 
   final authC = Get.find<GetxLoginController>();
-  final tc = Get.find<GetxLoginController>();
-  // final InputController inputCtrl = Get.put(InputController());
+  final tc = Get.find<GetxProfile>();
+  final logout = Get.find<GetxLoginController>();
   final file = Get.find<InputController>();
   final Storage storage = Storage();
   final GetxInputController2 inputCtrl = Get.put(GetxInputController2());
@@ -70,7 +70,7 @@ class DataPost extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextField(
                   enabled: false,
-                  controller: tc.emailCtrl,
+                  controller: tc.email,
                   decoration: const InputDecoration(
                       labelText: "AUTHOR",
                       border: OutlineInputBorder(),
@@ -385,7 +385,7 @@ class DataPost extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      file.upload(tc.emailCtrl.text);
+                      file.upload(tc.email.text);
                     },
                     child: const Text(
                       "Upload",
@@ -410,8 +410,8 @@ class DataPost extends StatelessWidget {
                     ),
                     onPressed: () {
                       rumah.add({
-                        'author': tc.emailCtrl.text,
-                        'gambar': tc.emailCtrl.text,
+                        'author': tc.email.text,
+                        'gambar': tc.email.text,
                         'judul': inputCtrl.judulPostCtrl.text,
                         'harga': inputCtrl.hargaCtrl.text,
                         'tanggal_post': inputCtrl.tglCtrl.text,

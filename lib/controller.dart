@@ -1,5 +1,6 @@
-// ignore_for_file: non_constant_identifier_names, avoid_print
+// ignore_for_file: non_constant_identifier_names, avoid_print, use_rethrow_when_possible
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +12,8 @@ class GetxProfile extends GetxController {
   final namaLengkap = TextEditingController();
   final noHP = TextEditingController();
   final alamatLengkap = TextEditingController();
+  final idUser = TextEditingController();
+  final email = TextEditingController();
 }
 
 class GetxLoginController extends GetxController {
@@ -24,9 +27,20 @@ class GetxLoginController extends GetxController {
 
   Stream<User?> get StreamAuthStatus => auth.authStateChanges();
 
+  final GetxProfile getdata = Get.put(GetxProfile());
+
   void login(String email, String password) async {
     try {
-      await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      CollectionReference users = firestore.collection("users");
+      DocumentSnapshot snapshot =
+          await users.doc(userCredential.user!.uid).get();
+      getdata.alamatLengkap.text = snapshot['alamat'];
+      getdata.namaLengkap.text = snapshot['nama'];
+      getdata.noHP.text = snapshot['noHp'];
+      getdata.email.text = snapshot['email'];
       Get.offAll(MainPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found' || e.code == 'unknown') {
@@ -70,12 +84,32 @@ class GetxLoginController extends GetxController {
     Get.offAll(SplashScreen());
   }
 
-  void sign_up(String email, String password) async {
+  Future<void> setUser(
+      String id, String nama, String email, String noHP, String alamat) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference users = firestore.collection("users");
     try {
-      await auth.createUserWithEmailAndPassword(
+      users.doc(id).set({
+        'nama': nama,
+        'email': email,
+        'noHp': noHP,
+        'alamat': alamat,
+      });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  void sign_up(String nama, String noHP, String alamat, String email,
+      String password) async {
+    try {
+      UserCredential credential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      // String id = credential;
+      await setUser(credential.user!.uid, nama, email, noHP, alamat);
+      // users.doc(credential).set(data)
       Get.offAll(SignIn());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {

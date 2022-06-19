@@ -86,6 +86,8 @@ class SignIn extends StatelessWidget {
                 onPressed: () {
                   authC.login(loginController.emailCtrl.text,
                       loginController.passwordCtrl.text);
+                      loginController.emailCtrl.text = '';
+                      loginController.passwordCtrl.text = '';
                 },
                 child: Text(
                   "Login",

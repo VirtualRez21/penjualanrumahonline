@@ -1,10 +1,12 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_const_constructors, duplicate_ignore, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, avoid_unnecessary_containers, prefer_interpolation_to_compose_strings, sort_child_properties_last
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:penjualanrumahonline/controller.dart';
 import 'package:penjualanrumahonline/editMyPost.dart';
 import 'package:penjualanrumahonline/inputController.dart';
+import 'package:penjualanrumahonline/viewMyPost.dart';
 
 class DetailPost extends StatelessWidget {
   const DetailPost({super.key});
@@ -14,6 +16,8 @@ class DetailPost extends StatelessWidget {
     final InputController inputCtrl = Get.put(InputController());
     final tc = Get.find<GetxLoginController>();
     final Storage storage = Storage();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference rumah = firestore.collection("rumah");
     // inputCtrl.hargaCtrl.text = '';
     // inputCtrl.judulPostCtrl.text = '';
     // inputCtrl.tglCtrl.text = '';
@@ -320,12 +324,16 @@ class DetailPost extends StatelessWidget {
                   'Delete',
                   style: TextStyle(fontSize: 20.0),
                 ),
-                onPressed: () => Get.snackbar(
-                  "Notifikasi",
-                  "Fitur Belum Tersedia :(",
-                  icon: Icon(Icons.info, color: Colors.white),
-                  snackPosition: SnackPosition.BOTTOM,
-                ),
+                onPressed: () {
+                  rumah.doc(inputCtrl.idPostCtrl.text).delete();
+                  Get.snackbar(
+                    "Notifikasi",
+                    "Delete Berhasil",
+                    icon: Icon(Icons.info, color: Colors.white),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  Get.offAll(PostDisplay());
+                }
               ),
             ),
           ],

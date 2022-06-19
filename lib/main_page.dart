@@ -113,7 +113,8 @@ class MainPage extends StatelessWidget {
   }
 
   final authC = Get.find<GetxLoginController>();
-  final tc = Get.find<GetxLoginController>();
+  final tc = Get.find<GetxProfile>();
+  final logout = Get.find<GetxLoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -174,10 +175,10 @@ class MainPage extends StatelessWidget {
                         backgroundImage: AssetImage('assets/me.jpg'),
                       ),
                       accountName: Text(
-                        'Johnny',
+                        '${tc.namaLengkap.text}',
                         style: TextStyle(fontSize: 20.0),
                       ),
-                      accountEmail: Text("${tc.emailCtrl.text}"),
+                      accountEmail: Text("${tc.email.text}"),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: ExactAssetImage("assets/sampul.jpg"),
@@ -242,8 +243,8 @@ class MainPage extends StatelessWidget {
                           child: IconButton(
                             onPressed: () {
                               authC.logout();
-                              tc.emailCtrl.text = "";
-                              tc.passwordCtrl.text = "";
+                              logout.emailCtrl.text = "";
+                              logout.passwordCtrl.text = "";
                             },
                             icon: Icon(Icons.logout),
                           ),
