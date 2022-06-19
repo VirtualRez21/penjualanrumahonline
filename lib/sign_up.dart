@@ -19,10 +19,12 @@ class SignUp extends StatelessWidget {
       String label,
       String hint,
       Widget ikon,
-      bool aktif) {
+      bool aktif,
+      bool pass) {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: TextFormField(
+        obscureText: pass,
         readOnly: aktif,
         textCapitalization: kapital,
         controller: ctrl,
@@ -59,6 +61,7 @@ class SignUp extends StatelessWidget {
                   "Isi Email",
                   Icon(Icons.person),
                   false,
+                  false,
                 ),
                 tempatInput(
                   TextCapitalization.none,
@@ -69,6 +72,7 @@ class SignUp extends StatelessWidget {
                   "Isi Password",
                   Icon(Icons.lock),
                   false,
+                  true,
                 ),
                 tempatInput(
                   TextCapitalization.words,
@@ -78,6 +82,7 @@ class SignUp extends StatelessWidget {
                   "Nama Lengkap",
                   "Isi Nama Lengkap",
                   Icon(Icons.person),
+                  false,
                   false,
                 ),
                 tempatInput(
@@ -89,6 +94,7 @@ class SignUp extends StatelessWidget {
                   "Isi No. HP",
                   Icon(Icons.phone),
                   false,
+                  false,
                 ),
                 tempatInput(
                   TextCapitalization.words,
@@ -98,6 +104,7 @@ class SignUp extends StatelessWidget {
                   "Alamat",
                   "Isi Alamat Lengkap",
                   Icon(Icons.home_filled),
+                  false,
                   false,
                 ),
               ],

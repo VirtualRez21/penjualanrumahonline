@@ -18,10 +18,12 @@ class SignIn extends StatelessWidget {
       String label,
       String hint,
       Widget ikon,
-      bool aktif) {
+      bool aktif,
+      bool pass) {
     return Container(
       margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
       child: TextFormField(
+        obscureText: pass,
         readOnly: aktif,
         textCapitalization: kapital,
         controller: ctrl,
@@ -57,6 +59,7 @@ class SignIn extends StatelessWidget {
                   "Isi Email",
                   Icon(Icons.person),
                   false,
+                  false,
                 ),
                 tempatInput(
                   TextCapitalization.none,
@@ -67,6 +70,7 @@ class SignIn extends StatelessWidget {
                   "Isi Password",
                   Icon(Icons.lock),
                   false,
+                  true
                 ),
               ],
             ),
