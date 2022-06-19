@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "752271750005",
+    "project_id": "pa-h-4-19",
+    "storage_bucket": "pa-h-4-19.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752271750005:android:37b8ae85d1b98efb0b593c",
+        "android_client_info": {
+          "package_name": "com.example.penjualanrumahonline"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752271750005-s9u91gilftuv9jr2hrf5vfn49kptrase.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNTUC9cR_Dv2SkgtE-cAXLLrt6DGWwRV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752271750005-s9u91gilftuv9jr2hrf5vfn49kptrase.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
