@@ -1,20 +1,21 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace, unnecessary_string_interpolations
+// ignore_for_file: file_names, prefer_const_constructors, unnecessary_string_interpolations, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, sized_box_for_whitespace
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:penjualanrumahonline/controller.dart';
-import 'package:penjualanrumahonline/history.dart';
+import 'package:penjualanrumahonline/detailHistory.dart';
 import 'package:penjualanrumahonline/inputPost.dart';
-import 'package:penjualanrumahonline/detailPage.dart';
+import 'package:penjualanrumahonline/detailMyPost.dart';
 import 'package:penjualanrumahonline/inputController.dart';
 import 'package:penjualanrumahonline/main.dart';
-import 'package:penjualanrumahonline/viewMyPost.dart';
+import 'package:penjualanrumahonline/main_page.dart';
+import 'package:penjualanrumahonline/testController.dart';
 import 'package:penjualanrumahonline/viewProfile.dart';
 
-class MainPage extends StatelessWidget {
-  MainPage({Key? key}) : super(key: key);
+class historyDisplay extends StatelessWidget {
+  historyDisplay({Key? key}) : super(key: key);
 
   Widget kontenRumah(
     String id,
@@ -39,7 +40,7 @@ class MainPage extends StatelessWidget {
     String rekening,
   ) {
     final Storage storage = Storage();
-    final InputController inputCtrl = Get.put(InputController());
+
     return Container(
       margin: EdgeInsets.all(8),
       width: 180,
@@ -83,9 +84,24 @@ class MainPage extends StatelessWidget {
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
-                Get.to(
-                  DetailPage(),
-                );
+                // inputCtrl.hargaCtrl.text = '';
+                // inputCtrl.judulPostCtrl.text = '';
+                // inputCtrl.tglCtrl.text = '';
+                // inputCtrl.bedCtrl.text = '';
+                // inputCtrl.bathCtrl.text = '';
+                // inputCtrl.bangunanCtrl.text = '';
+                // inputCtrl.tanahCtrl.text = '';
+                // inputCtrl.alamatCtrl.text = '';
+                // inputCtrl.interCtrl = '';
+                // inputCtrl.lantaiCtrl.text = '';
+                // inputCtrl.sertifCtrl.text = '';
+                // inputCtrl.madeCtrl.text = '';
+                // inputCtrl.listrikCtrl.text = '';
+                // inputCtrl.air = '';
+                // inputCtrl.rekCtrl.text = '';
+                // inputCtrl.deskCtrl.text = '';
+                // inputCtrl.statusCtrl = '';
+
                 inputCtrl.idPostCtrl.text = id;
                 inputCtrl.authorCtrl.text = author;
                 inputCtrl.judulPostCtrl.text = judul;
@@ -105,6 +121,9 @@ class MainPage extends StatelessWidget {
                 inputCtrl.rekCtrl.text = rekening;
                 inputCtrl.deskCtrl.text = deskripsi;
                 inputCtrl.statusCtrl = status;
+                Get.to(
+                  DetailHistory(),
+                );
               },
             ),
           ),
@@ -115,42 +134,17 @@ class MainPage extends StatelessWidget {
 
   final authC = Get.find<GetxLoginController>();
   final tc = Get.find<GetxProfile>();
-  final logout = Get.find<GetxLoginController>();
+  final GetxInputController inputCtrl = Get.put(GetxInputController());
 
   @override
   Widget build(BuildContext context) {
     // String email = tc.emailCtrl.text;
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    CollectionReference rumah = firestore.collection("rumah");
-    final InputController inputCtrl = Get.put(InputController());
-    inputCtrl.idPostCtrl.text = "";
-    inputCtrl.authorCtrl.text = "";
-    inputCtrl.judulPostCtrl.text = "";
-    inputCtrl.hargaCtrl.text = "";
-    inputCtrl.tglCtrl.text = "";
-    inputCtrl.bedCtrl.text = "";
-    inputCtrl.bathCtrl.text = "";
-    inputCtrl.bangunanCtrl.text = "";
-    inputCtrl.tanahCtrl.text = "";
-    inputCtrl.alamatCtrl.text = "";
-    inputCtrl.interCtrl = "";
-    inputCtrl.lantaiCtrl.text = "";
-    inputCtrl.sertifCtrl.text = "";
-    inputCtrl.madeCtrl.text = "";
-    inputCtrl.listrikCtrl.text = "";
-    inputCtrl.air = "";
-    inputCtrl.rekCtrl.text = "";
-    inputCtrl.deskCtrl.text = "";
-    inputCtrl.statusCtrl = "";
-    return WillPopScope(
-      onWillPop: () {
-        SystemNavigator.pop();
-        return Future.value(false);
-      },
-      child: Scaffold(
+    CollectionReference history = firestore.collection("history");
+    return  Scaffold(
         appBar: AppBar(
           title:
-              Text("Beranda | Rumah Online", style: TextStyle(fontSize: 16.0)),
+              Text("My History | Rumah Online", style: TextStyle(fontSize: 16.0)),
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -162,110 +156,6 @@ class MainPage extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ),
-        drawer: Drawer(
-          backgroundColor: Color.fromARGB(255, 2, 159, 154),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    UserAccountsDrawerHeader(
-                      currentAccountPicture: CircleAvatar(
-                        backgroundImage: AssetImage('assets/me.jpg'),
-                      ),
-                      accountName: Text(
-                        '${tc.namaLengkap.text}',
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                      accountEmail: Text("${tc.email.text}"),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: ExactAssetImage("assets/sampul.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person_pin),
-                      title: const Text(
-                        'Profile',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      onTap: () => Get.to(
-                        Profile(),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.home_sharp),
-                      title: const Text(
-                        'Beranda',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      onTap: () => Get.to(
-                        MainPage(),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.add_circle),
-                      title: const Text(
-                        'Add Post',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      onTap: () => Get.to(
-                        DataPost(),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.list),
-                      title: const Text(
-                        'My Post',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      onTap: () => Get.to(
-                        PostDisplay(),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.history),
-                      title: const Text(
-                        'My History',
-                        style: TextStyle(fontSize: 14.0),
-                      ),
-                      onTap: () => Get.to(
-                        historyDisplay(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Container(
-                    child: Column(
-                      children: <Widget>[
-                        Divider(
-                          height: 1,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: IconButton(
-                            onPressed: () {
-                              authC.logout();
-                              logout.emailCtrl.text = "";
-                              logout.passwordCtrl.text = "";
-                            },
-                            icon: Icon(Icons.logout),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
           ),
         ),
         backgroundColor: Color.fromARGB(255, 168, 212, 188),
@@ -281,7 +171,9 @@ class MainPage extends StatelessWidget {
                     child: Row(
                       children: [
                         StreamBuilder<QuerySnapshot>(
-                          stream: rumah.where('status', isNotEqualTo: 'Sudah Dibeli').snapshots(),
+                          stream: history
+                              .where('pembeli', isEqualTo: tc.email.text)
+                              .snapshots(),
                           builder: (_, snapshot) {
                             return (snapshot.hasData)
                                 ? Column(
@@ -335,7 +227,6 @@ class MainPage extends StatelessWidget {
             )
           ],
         ),
-      ),
     );
   }
 }

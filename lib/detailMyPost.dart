@@ -14,7 +14,8 @@ class DetailPost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final InputController inputCtrl = Get.put(InputController());
-    final tc = Get.find<GetxLoginController>();
+    // final tc = Get.find<GetxLoginController>();
+    final tc = Get.find<GetxProfile>();
     final Storage storage = Storage();
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference rumah = firestore.collection("rumah");
@@ -57,7 +58,7 @@ class DetailPost extends StatelessWidget {
         child: Column(
           children: [
             FutureBuilder(
-              future: storage.downloadURL(tc.emailCtrl.text),
+              future: storage.downloadURL(tc.email.text),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done &&
                     snapshot.hasData) {
@@ -88,7 +89,7 @@ class DetailPost extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            tc.emailCtrl.text + " - " + inputCtrl.tglCtrl.text,
+                            tc.email.text + " - " + inputCtrl.tglCtrl.text,
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.justify,
                           ),
@@ -332,7 +333,7 @@ class DetailPost extends StatelessWidget {
                     icon: Icon(Icons.info, color: Colors.white),
                     snackPosition: SnackPosition.BOTTOM,
                   );
-                  Get.offAll(PostDisplay());
+                  Get.to(PostDisplay());
                 }
               ),
             ),

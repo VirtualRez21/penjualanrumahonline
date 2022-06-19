@@ -4,20 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:penjualanrumahonline/controller.dart';
+import 'package:penjualanrumahonline/editMyPost.dart';
+import 'package:penjualanrumahonline/history.dart';
 import 'package:penjualanrumahonline/inputController.dart';
-import 'package:penjualanrumahonline/main_page.dart';
+import 'package:penjualanrumahonline/testController.dart';
+import 'package:penjualanrumahonline/viewMyPost.dart';
 
-class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+class DetailHistory extends StatelessWidget {
+  const DetailHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Storage storage = Storage();
-    final InputController inputCtrl = Get.put(InputController());
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    CollectionReference history = firestore.collection("history");
-    CollectionReference rumah = firestore.collection("rumah");
+    final GetxInputController inputCtrl = Get.put(GetxInputController());
+    // final tc = Get.find<GetxLoginController>();
     final tc = Get.find<GetxProfile>();
+    final Storage storage = Storage();
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference rumah = firestore.collection("rumah");
     // inputCtrl.hargaCtrl.text = '';
     // inputCtrl.judulPostCtrl.text = '';
     // inputCtrl.tglCtrl.text = '';
@@ -38,7 +41,7 @@ class DetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         // ignore: prefer_const_constructors
-        title: Text("Detail Page | Rumah Online",
+        title: Text("Detail History | Rumah Online",
             style: TextStyle(fontSize: 16.0)),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -88,9 +91,7 @@ class DetailPage extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            inputCtrl.authorCtrl.text +
-                                " - " +
-                                inputCtrl.tglCtrl.text,
+                            inputCtrl.authorCtrl.text + " - " + inputCtrl.tglCtrl.text,
                             style: TextStyle(fontSize: 14),
                             textAlign: TextAlign.justify,
                           ),
@@ -295,67 +296,32 @@ class DetailPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Material(
-        child: Container(
-          margin: EdgeInsets.all(15.0),
-          height: 40,
-          child: ElevatedButton(
-              child: Text(
-                'Beli Rumah',
-                style: TextStyle(fontSize: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.all(15.0),
+              height: 40,
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(primary: Colors.red),
+                icon: Icon(Icons.delete_rounded),
+                label: Text(
+                  'Delete',
+                  style: TextStyle(fontSize: 20.0),
+                ),
+                onPressed: () {
+                  rumah.doc(inputCtrl.idPostCtrl.text).delete();
+                  Get.snackbar(
+                    "Notifikasi",
+                    "Delete Berhasil",
+                    icon: Icon(Icons.info, color: Colors.white),
+                    snackPosition: SnackPosition.BOTTOM,
+                  );
+                  Get.to(historyDisplay());
+                }
               ),
-              onPressed: () {
-                rumah.doc(inputCtrl.idPostCtrl.text).update({
-                  'status' : 'Sudah Dibeli',
-                });
-                history.add({
-                  'pembeli' : tc.email.text,
-                  'author': inputCtrl.authorCtrl.text,
-                  'gambar': inputCtrl.authorCtrl.text,
-                  'judul': inputCtrl.judulPostCtrl.text,
-                  'harga': inputCtrl.hargaCtrl.text,
-                  'tanggal_post': inputCtrl.tglCtrl.text,
-                  'jml_bedroom': inputCtrl.bedCtrl.text,
-                  'jml_bathroom': inputCtrl.bathCtrl.text,
-                  'luas_bangunan': inputCtrl.bangunanCtrl.text,
-                  'luas_tanah': inputCtrl.tanahCtrl.text,
-                  'alamat': inputCtrl.alamatCtrl.text,
-                  'interior': inputCtrl.interCtrl,
-                  'lantai': inputCtrl.lantaiCtrl.text,
-                  'sertif': inputCtrl.sertifCtrl.text,
-                  'madeYear': inputCtrl.madeCtrl.text,
-                  'listrik': inputCtrl.listrikCtrl.text,
-                  'air': inputCtrl.air,
-                  'noRek': inputCtrl.rekCtrl.text,
-                  'status': 'Sudah Dibeli',
-                  'deskripsi': inputCtrl.deskCtrl.text,
-                });
-                inputCtrl.authorCtrl.text = '';
-                inputCtrl.hargaCtrl.text = '';
-                inputCtrl.judulPostCtrl.text = '';
-                inputCtrl.tglCtrl.text = '';
-                inputCtrl.bedCtrl.text = '';
-                inputCtrl.bathCtrl.text = '';
-                inputCtrl.bangunanCtrl.text = '';
-                inputCtrl.tanahCtrl.text = '';
-                inputCtrl.alamatCtrl.text = '';
-                inputCtrl.interCtrl = '';
-                inputCtrl.lantaiCtrl.text = '';
-                inputCtrl.sertifCtrl.text = '';
-                inputCtrl.madeCtrl.text = '';
-                inputCtrl.listrikCtrl.text = '';
-                inputCtrl.air = '';
-                inputCtrl.rekCtrl.text = '';
-                inputCtrl.deskCtrl.text = '';
-                // inputCtrl.statusCtrl = '';
-                Get.snackbar(
-                  "Notifikasi",
-                  "Berhasil Beli, Telah Masuk History",
-                  icon: Icon(Icons.info, color: Colors.white),
-                  snackPosition: SnackPosition.BOTTOM,
-                );
-                Get.to(MainPage());
-                
-              }),
+            ),
+          ],
         ),
         color: Colors.transparent,
       ),
