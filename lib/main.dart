@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: use_key_in_widget_cionstructors, prefer_const_constructors, avoid_unnecessary_containers
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
