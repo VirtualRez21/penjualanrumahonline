@@ -14,3 +14,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+Nama Anggota : 
+- 1915016048 MUCHLIS MARDAIS 
+- 1915016037 AIRLANGGA RAHIMAH PUTRA 
+- 1915016044 HESI POPITALINDA 
+- 1915016027 GUSTI AQHSAL MUJAHID
